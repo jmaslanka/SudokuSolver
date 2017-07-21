@@ -105,7 +105,6 @@ class Board(object):
         """
         Given a coordinates to value return all values in that section.
         """
-        # TODO optimize by adding sector variable
         x //= 3
         y //= 3
         x_values = (x * 3, x * 3 + 1, x * 3 + 2)
