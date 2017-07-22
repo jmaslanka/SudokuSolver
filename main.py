@@ -7,11 +7,11 @@ SCHEME = """
     (0, 0, 0)   (0, 0, 0)   (0, 0, 0)
     (0, 0, 0)   (0, 0, 0)   (0, 0, 0)
     (0, 0, 0)   (0, 0, 0)   (0, 0, 0)
-
+    
     (0, 0, 0)   (0, 0, 0)   (0, 0, 0)
     (0, 0, 0)   (0, 0, 0)   (0, 0, 0)
     (0, 0, 0)   (0, 0, 0)   (0, 0, 0)
-
+    
     (0, 0, 0)   (0, 0, 0)   (0, 0, 0)
     (0, 0, 0)   (0, 0, 0)   (0, 0, 0)
     (0, 0, 0)   (0, 0, 0)   (0, 0, 0)
@@ -61,7 +61,7 @@ class Board(object):
         Based on description from:
         https://en.wikipedia.org/wiki/Sudoku_solving_algorithms#Backtracking
         """
-        x, y, last_tmp = 0, 0, 1
+        x, y, last_num = 0, 0, 1
         search = True
         omit = False
         while x < 9:
@@ -70,34 +70,34 @@ class Board(object):
                     y += 1
                     continue
                 else:
-                    for tmp in range(last_tmp, 10):
-                        if (tmp not in self.board[x]
-                                and tmp not in [_[y] for _ in self.board]
-                                and tmp not in self.section_values(x, y)):
-                            self.board[x][y] = tmp
-                            last_tmp = 1
+                    for num in range(last_num, 10):
+                        if (num not in self.board[x]
+                                and num not in [_[y] for _ in self.board]
+                                and num not in self.section_values(x, y)):
+                            self.board[x][y] = num
+                            last_num = 1
                             break
                     else:
                         omit = True
-                        if self.board[x][y] is not 0:
-                            self.board[x][y] = 0
+                        self.board[x][y] = 0
                         while search:
                             if y == 0:
                                 if x == 0:
-                                    give_output(self.board)
-                                    return
+                                    raise SolutionNotFoundError(
+                                        SOLUTION_ERROR_MESSAGE
+                                    )
                                 x -= 1
                                 y = 8
                             else:
                                 y -= 1
                             if (x, y) not in self.constant_positions:
                                 search = False
-                                last_tmp = self.board[x][y] + 1
+                                last_num = self.board[x][y] + 1
                         search = True
                 if omit:
                     omit = False
-                    continue
-                y += 1
+                else:
+                    y += 1
             y = 0
             x += 1
 
