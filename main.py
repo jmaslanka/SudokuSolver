@@ -54,11 +54,11 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             stdout=subprocess.PIPE
         )
         elapsed = time.clock() - start_time
-        solution = eval(result.stdout.decode('utf-8'))
-        if isinstance(solution, str):
+        solution = result.stdout.decode('utf-8')
+        if not solution.startswith('['):
             msg = QtWidgets.QMessageBox.warning(self, 'Warning', solution)
         else:
-            self.create_output(solution)
+            self.create_output(eval(solution))
             self.time_display.setText('Time: {0:.5f} seconds'.format(elapsed))
 
     def reset(self):
